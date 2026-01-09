@@ -27,6 +27,8 @@ class CategoryResource extends Resource
 public static function table(Table $table): Table
 {
     return $table
+        ->modifyQueryUsing(fn(Builder $query) => $query->withoutGlobalScopes([SoftDeletingScope::class]))
+
         ->columns([
             Tables\Columns\ImageColumn::make('image')->disk('public')->height(32)->width(32),
 
@@ -40,7 +42,6 @@ public static function table(Table $table): Table
                 ->falseColor('success')
                 ->boolean(),
 
-            // ✅ Tambahkan ini agar ikon Columns muncul lagi
             Tables\Columns\TextColumn::make('created_at')
                 ->label('Created')
                 ->dateTime()
